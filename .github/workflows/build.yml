@@ -1,0 +1,29 @@
+# build src/Anime as executable using github actions and dotnet
+
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Build with dotnet
+      run: dotnet build src/Anime/Anime.csproj
+    # upload the build as an artifact
+    - name: Upload build
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: src/Anime/bin/Release/net6.0/Anime
+
